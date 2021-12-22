@@ -116,7 +116,6 @@ client.on('ready', () => {
 client.on("messageCreate", message => {
     //  console.log(message.content);
 
-	
     if (!message.content.startsWith(prefix)) return;
     const args = message.content.substring(prefix.length).split(/ +/);
     const cmd = args[0];
@@ -129,8 +128,6 @@ client.on("messageCreate", message => {
 	command.execute(message, args, client);
 	
 });
-
-
 
 client.login(token);
 // * Event for slash commands
@@ -150,66 +147,55 @@ let roleName = [];
 let roleId = [];
 let emojiName = [];
 let counter = 0;
-let i = 0;
-msgLayout.forEach(layout => {
-	
+msgLayout.forEach(layout => {	
 	let arr = layout.split(' ');
 	roleId[counter] = arr[0];
 	emojiName[counter] = arr[1];
 	roleName[counter] = arr[2];
-    // roleIDCache[counter] = arr[1];
-    // emojiNameCache[counter] = arr[2];
-    // displayNameCache[counter] = arr.slice(3).join(' ');
-    counter++
-	
+    counter++	
 });
 
 //*Adding Reactions
 client.on('messageReactionAdd', (reaction, user) => {
 	if(user.bot) return;
 
-    // if (reaction.partial) {
-	// 	try {
-	// 		await reaction.fetch();
-	// 	} catch (error) {
-	// 		console.log(chalk.red("ERROR") + ' | Something went wrong when fetching the message: ', error);
-	// 		return;
-	// 	}
-    // }
-
-	
     if(reaction.message.id == msgID){
 
 		if(emojiName.includes(reaction.emoji.name)){
 
-			
 			let i = emojiName.indexOf(reaction.emoji.name);
-			console.log(i)
-
-				console.log(emojiName.indexOf(reaction.emoji.name))
+			
 				let role = reaction.message.guild.roles.cache.find(x => x.name === roleName[i]);
 				
 				reaction.message.guild.members.fetch(user.id).then(member => {
 					member.roles.add(role);
 					console.log(chalk.blue("INFO") + '  | Added role ' + roleName[i] + ' to ' + user.username); 
 				});
-				
-			
+		}
+	}
+});
 
+//*Removing Reactions
+client.on('messageReactionRemove', async (reaction, user) => {
+		if(user.bot) return;
+
+		if(reaction.message.id == msgID){
+
+			if(emojiName.includes(reaction.emoji.name)){
+	
+				let i = emojiName.indexOf(reaction.emoji.name);
+
+				let role = reaction.message.guild.roles.cache.find(x => x.name === roleName[i]);
+					
+				reaction.message.guild.members.fetch(user.id).then(member => {
+					member.roles.remove(role);
+					console.log(chalk.blue("INFO") + '  | Removed role ' + roleName[i] + ' from ' + user.username);
+				});
+			}
 		}
 
-	}
-
-    // if(emojiIDCache.includes(reaction._emoji.id)) {
-    //     indexx = emojiIDCache.indexOf(reaction._emoji.id);
-    //     var roleid = roleIDCache[indexx];
-    //     var rolename = emojiNameCache[indexx];
-    //     var role = reaction.message.channel.guild.roles.cache.get(roleid);
-    //     if(!reaction.message.guild.member(user).roles.cache.has(roleid)) {
-    //         console.log(chalk.blue("INFO") + '  | Added role ' + rolename + ' to ' + user.username);
-    //         reaction.message.guild.member(user).roles.add(role);
-    //     }
-    // }
-	
 });
+
+	
+
 
