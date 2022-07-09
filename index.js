@@ -141,25 +141,32 @@ client.on("interactionCreate", interaction => {
 	command.execute(interaction, client);
 });
 
-const { msgID, msgLayout} = require('./configRole.json');
+//const { msgID, msgLayout} = require('./configRole.json');
+const config = require('./configRole.json');
 
 let roleName = [];
 let roleId = [];
 let emojiName = [];
 let counter = 0;
-msgLayout.forEach(layout => {	
-	let arr = layout.split(' ');
-	roleId[counter] = arr[0];
-	emojiName[counter] = arr[1];
-	roleName[counter] = arr[2];
-    counter++	
-});
+
+
+
 
 //*Adding Reactions
 client.on('messageReactionAdd', (reaction, user) => {
+	let msgLayout = config[reaction.message.guild.name].msg.msgLayout
+
+	msgLayout.forEach(layout => {	
+		let arr = layout.split(' ');
+		roleId[counter] = arr[0];
+		emojiName[counter] = arr[1];
+		roleName[counter] = arr[2];
+		counter++	
+	});
+
 	if(user.bot) return;
 
-    if(reaction.message.id == msgID){
+    if(reaction.message.id == config[reaction.message.guild.name].msg.msgID){
 
 		if(emojiName.includes(reaction.emoji.name)){
 
@@ -169,7 +176,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 				
 				reaction.message.guild.members.fetch(user.id).then(member => {
 					member.roles.add(role);
-					console.log(chalk.blue("INFO") + '  | Added role ' + roleName[i] + ' to ' + user.username); 
+					console.log(chalk.blue("INFO") + '  | ' + chalk.green("Added") + ' role ' + roleName[i] + ' to ' + user.username); 
 				});
 		}
 	}
@@ -179,7 +186,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 client.on('messageReactionRemove', async (reaction, user) => {
 		if(user.bot) return;
 
-		if(reaction.message.id == msgID){
+		if(reaction.message.id == config[reaction.message.guild.name].msg.msgID){
 
 			if(emojiName.includes(reaction.emoji.name)){
 	
@@ -189,7 +196,7 @@ client.on('messageReactionRemove', async (reaction, user) => {
 					
 				reaction.message.guild.members.fetch(user.id).then(member => {
 					member.roles.remove(role);
-					console.log(chalk.blue("INFO") + '  | Removed role ' + roleName[i] + ' from ' + user.username);
+					console.log(chalk.blue("INFO") + '  | ' + chalk.red("Removed") + ' role ' + roleName[i] + ' from ' + user.username);
 				});
 			}
 		}

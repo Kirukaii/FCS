@@ -10,10 +10,11 @@ module.exports = {
 
 	execute(message, args, client) {
 
-		const emojiList = message.guild.emojis.cache.map(emoji => emoji.id).join(" ");
-		message.channel.send(emojiList);
-
-		//let gemoji = client.emojis.find(emoji => emoji.name === "bean") 
+		
+		const owner = message.guild.member.get(x => x.id == message.guild.ownerId);
+		
+		console.log(owner)
+		
 	},
 };
 

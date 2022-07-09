@@ -1,7 +1,25 @@
 {
-    "msgID": "922985532177387551",
-    "msgLayout": [
-        "917063564978716673 👨 Chłopak",
-        "917063669488185384 👩 Kobieta"
-    ]
+    "Kirukai": {
+        "serverName": "Kirukai",
+        "serverID": "681665200927015001",
+        "msg": {
+            "msgID": "995274001079341056",
+            "msgLayout": [
+                "917063564978716673 👨 Chłopak",
+                "917063669488185384 👩 Kobieta",
+                "960652515202957412 ❤️ Love"
+            ]
+        }
+    },
+    "Fucked Community Server": {
+        "serverName": "Fucked Community Server",
+        "serverID": "631207839884640266",
+        "msg": {
+            "msgID": "995274212275134474",
+            "msgLayout": [
+                "889225928335573072 👨 Chłopak",
+                "889226131750924348 👩 Kobieta"
+            ]
+        }
+    }
 }

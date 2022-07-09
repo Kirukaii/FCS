@@ -37,7 +37,10 @@ module.exports = {
           {
             emoji = emoji.split(',');     
           }       
-        
+          
+          
+
+
           //*send possible roles && Create roles
           
           for (let i = 0; i < emoji.length; i++) {
@@ -57,7 +60,14 @@ module.exports = {
               message.channel.send(emoji[i] + " " + role[i])
 
             }
-        
+          
+          
+            // var data = fs.readFileSync("configRole.json");
+            // var jdata = JSON.parse(data);
+            //console.log(jdata);
+            let x = [];
+
+
           //* set reactions
           message.channel.send("\n React to get these roles.").then(function (message){
           for (let i = 0; i < emoji.length; i++) {
@@ -71,29 +81,52 @@ module.exports = {
             //console.log(gemoji);
 
             
+            x.push(
+              /*emoji[i].id + " " +*/ grole.id +" "+ emoji[i] +" "+ role[i]
+            )
+            //console.log(x);
+
             //* Write JSON File
-            
-            if (config['msgLayout'].length >= 2) {
-              config['msgLayout']= 
-              [
-              ]
-              console.log(chalk.magenta("Reseting msgLayout"))
-            }
-            config['msgLayout'].push(
-              //gemoji.id +" "+ 
-              grole.id +" "+ emoji[i] +" "+ role[i]
-            );
+              config[message.guild.name]= {
+                serverName: message.guild.name,
+                serverID: message.guild.id,
+                msg: {
+                  msgID: message.id, 
+                  msgLayout: x
+                }
+              } 
 
+          
+              
             const stringifiedrequest = JSON.stringify(config, null, 4,'\t');
-            fs.writeFileSync("./configRole.json", stringifiedrequest)
-            }
+            fs.writeFileSync("./configRole.json", stringifiedrequest)   
+            
+            // if (config['msgLayout'].length >= 2) {
+            //   config['msgLayout']= 
+            //   [
+            //   ]
+            //   console.log(chalk.magenta("Reseting msgLayout"))
+            // }
 
+            // config['msgLayout'].push(
+            //   //gemoji.id +" "+ 
+            //   grole.id +" "+ emoji[i] +" "+ role[i]
+            // );
+
+            //  const data = {
+            //   "msgLayout" :  grole.id +" "+ emoji[i] +" "+ role[i]   
+            //   };
+
+            //  config['Kirukai']['msgLayout'].push(data);
+          }
+          console.log(config);
           //* Define the ID of the msg
-          let id = message.id;
+          //let id = message.id;
           //console.log(id);
-          config['msgID']= id;
-          const stringifiedrequest = JSON.stringify(config, null, 4,'\t');
-          fs.writeFileSync("./configRole.json", stringifiedrequest)
+
+          
+          
+
         });
 
         }else return message.channel.send("Nie masz Permisji");
